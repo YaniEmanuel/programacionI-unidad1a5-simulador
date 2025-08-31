@@ -1,4 +1,4 @@
-// Notas: helpers chiquicos para no repetir (random, barajar, tiempo, etcs y etcs)
+// Notas: helpers chicos para no repetir (random, barajar, tiempo, etcs y etcs)
 
 (function(){
   const Utils = {
@@ -19,7 +19,7 @@
       return `${hh}:${mm}:${ss}`;
     },
     escape(str){ return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); },
-    // Chiquito pero útil para evaluar expresiones seguras (solo ops permitidas):
+    // Chico pero útil para evaluar expresiones seguras (solo ops permitidas):
     evalAritmetica(expr){
       // Admito dígitos, espacios y + - * / % (evito cualquier otra cosa)
       if(!/^[\d\s\+\-\*\/\%()]+$/.test(expr)) throw new Error("Expresión inválida");
