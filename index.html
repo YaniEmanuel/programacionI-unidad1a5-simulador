@@ -1,1 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simulador de Parcial — Programación I</title>
+  <meta name="description" content="Simulador interactivo de Programación I: estudio y examen con generador de ejercicios y explicaciones claras.">
+  <link rel="stylesheet" href="css/estilo.css" />
+</head>
+<body>
+  <header class="wrap header">
+    <h1>Simulador de Parcial — Programación I</h1>
+    <p class="subtitle">Generador infinito + explicación clara (Estudio / Examen 1h)</p>
+  </header>
+
+  <main class="wrap">
+    <!-- Controles -->
+    <section class="panel">
+      <div class="fila">
+        <label>Modo:
+          <select id="sel-modo">
+            <option value="estudio" selected>Estudio (feedback inmediato)</option>
+            <option value="examen">Examen (1 hora, feedback al final)</option>
+          </select>
+        </label>
+
+        <label>Tema:
+          <select id="sel-tema">
+            <option value="TODOS" selected>Todos</option>
+            <option value="Variables">Variables</option>
+            <option value="Operadores">Operadores</option>
+            <option value="Logicos">Lógicos/Relacionales</option>
+            <option value="Asignaciones">Asignaciones</option>
+            <option value="Condicionales">Condicionales (Si/Segun)</option>
+            <option value="Repetitivas">Repetitivas (mientras/para)</option>
+            <option value="Casos">Casos prácticos (bisiesto/promedio)</option>
+          </select>
+        </label>
+
+        <button id="btn-empezar">Empezar</button>
+        <div id="estado" class="muted">Elegí modo/tema y dale a Empezar.</div>
+      </div>
+
+      <div class="status">
+        <div id="timer" class="timer">⏱ 01:00:00</div>
+        <div id="progreso" class="muted">0/0</div>
+      </div>
+    </section>
+
+    <!-- Pregunta / Ejercicio -->
+    <section class="panel">
+      <div id="tarjeta" class="card">
+        <div id="tema-actual" class="muted"></div>
+        <h2 id="enunciado">—</h2>
+
+        <ol id="opciones" class="opciones"></ol>
+
+        <div id="respuesta-libre" class="respuesta-libre" style="display:none">
+          <label>Tu respuesta:
+            <input id="input-respuesta" type="text" autocomplete="off" />
+          </label>
+        </div>
+
+        <div id="explicacion" class="explicacion" style="display:none"></div>
+      </div>
+
+      <div class="fila botones">
+        <button id="btn-comprobar" disabled>Comprobar</button>
+        <button id="btn-siguiente" disabled>Siguiente</button>
+        <button id="btn-finalizar" style="display:none">Finalizar examen</button>
+      </div>
+    </section>
+
+    <!-- Resultados -->
+    <section class="panel">
+      <h2>Resultados</h2>
+      <div class="grid">
+        <div>
+          <div class="fila between">
+            <div>Progreso</div><div id="lbl-progreso" class="muted">0%</div>
+          </div>
+          <div class="barra"><div id="bar-progreso" style="width:0%"></div></div>
+        </div>
+        <div>
+          <div class="fila between">
+            <div>Puntaje</div><div id="lbl-puntaje" class="muted">0 correctas</div>
+          </div>
+          <div class="barra"><div id="bar-puntaje" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div id="revision" class="revision"></div>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    <p>By <strong>Yani Castillo</strong></p>
+  </footer>
+
+  <!-- Orden de carga: utilidades -> generador -> app -->
+  <script src="js/utilidades.js"></script>
+  <script src="js/generador.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
 
