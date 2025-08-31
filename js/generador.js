@@ -1,5 +1,5 @@
 // la idea es que no te tire la misma cosa cada dos minutos.
-// - Recuerdo "firmas" de lo generado en esta sesión y las evito.
+// - Rec "firmas" de lo generado en esta sesion y las evito.
 
 (function(){
   const T = {
@@ -22,7 +22,7 @@
       this.cursor = 0;
     },
     firmaDe(item){
-      // Intento una firma estable y corta; prioridad: estructura/params.
+      // Intent una firma estable y corta; prioridad: estructura/params??
       // Si hay respuesta/opciones, la incluyo para distinguir.
       const base = [
         item.tema,
@@ -49,9 +49,9 @@
     }
   };
 
-  // --- utilillos chiquitos para variar redacciones ---
+  // --- utiles chicod para variar redacciones ---
   const Frases = {
-    // Nada rebuscado; objetivo: que no se lea clonada la explicación
+    // No rebuscado; obbjetivo: explicacion original..
     aritPrefix: [
       "Primero multiplicación y división; luego suma y resta.",
       "Recordá: * y / antes que + y -.",
@@ -177,7 +177,7 @@
 
   // --- ASIGNACIONES / TRAZAS (Respuesta libre) ---
   function genAsignaciones(){
-    // Variantes nuevas para que no canse: compuestos, swap, mixto, encadenado
+    // Variantes nuevas para que no aburra: compuestos, swap, mixto, encadenado
     const base = Utils.choice(["compuestos","swap","mixto","encadenado"]);
     let enun = "", pasos = [], respuesta = 0, plantilla = base;
 
@@ -383,8 +383,8 @@ otro → imprimir "Z"`;
       // Si se repitió, reintento con misma familia variando números
     }
 
-    // Si no pude evitar repetición (muy mala suerte), devuelvo lo último.
-    // Prefiero devolver algo antes que quedarme colgado.
+    // Si no pude evitar repetición devuelvo lo último o nada?
+    // Prefiero devolver algo antes que quedarme en el aire..
     let backup = genOperadores();
     Sesion.marcar(backup);
     return backup;
