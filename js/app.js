@@ -1,3 +1,6 @@
+// app.js
+// flujo ui
+
 (function(){
   const $ = s => document.querySelector(s);
   const on = (el,ev,fn) => el && el.addEventListener(ev,fn);
@@ -54,8 +57,10 @@
   }
   function resetReview(){ zonaRevision.innerHTML = ""; }
 
+  // render mcq
   function renderMCQ(item){
     boxLibre.style.display = "none";
+    inputLibre.disabled = false;
     inputLibre.value = "";
     listaOpciones.innerHTML = item.opciones.map((t,i)=>(
       `<li><button class="opt" data-i="${i}" type="button">${Utils.escape(t)}</button></li>`
@@ -64,18 +69,22 @@
       b.addEventListener("click", ()=>{
         listaOpciones.querySelectorAll(".opt").forEach(x=>x.classList.remove("is-selected"));
         b.classList.add("is-selected");
-        btnComprobar.disabled = (ST.modo==="estudio") ? false : true;
+        if(ST.modo==="estudio") btnComprobar.disabled = false;
         ST.seleccion = parseInt(b.dataset.i,10);
       });
     });
   }
+
+  // render libre
   function renderLibre(){
     listaOpciones.innerHTML = "";
     boxLibre.style.display = "block";
+    inputLibre.disabled = false;        // <- clave
     inputLibre.value = "";
-    btnComprobar.disabled = (ST.modo==="estudio") ? false : true;
+    if(ST.modo==="estudio") btnComprobar.disabled = true;
   }
 
+  // render item
   function renderItem(item){
     lblTemaActual.textContent = `Tema: ${item.tema}`;
     lblEnunciado.textContent = item.enunciado;
@@ -88,7 +97,7 @@
 
     if(ST.modo==="estudio"){
       btnComprobar.disabled = true;
-      btnSiguiente.disabled = true;
+      btnSiguiente.disabled = false;     // <- ahora se puede saltar
       btnFinalizar.style.display = "none";
     }else{
       btnComprobar.disabled = true;
@@ -97,6 +106,7 @@
     }
   }
 
+  // timer
   function startTimer(){
     stopTimer();
     ST.timeLeft = 3600;
@@ -111,15 +121,17 @@
     },1000);
   }
   function stopTimer(){ if(ST.tick) clearInterval(ST.tick); ST.tick=null; }
-  function updateTimer(){ lblTimer.textContent = "⏱ " + Utils.formatTimeHMS(ST.timeLeft); }
+  function updateTimer(){ lblTimer.textContent = "Timer " + Utils.formatTimeHMS(ST.timeLeft); }
 
+  // siguiente
   function siguiente(){
     if(ST.modo==="examen"){
-      guardarRespuesta(false);
+      guardarRespuesta();
     }
     avanzar();
   }
 
+  // avanzar
   function avanzar(){
     if(ST.idx < ST.total){
       ST.idx++;
@@ -133,6 +145,7 @@
     }
   }
 
+  // comprobar (estudio)
   function comprobar(){
     if(!ST.actual) return;
     if(ST.actual.tipo==="mcq"){
@@ -148,7 +161,6 @@
       setScore(ST.score, ST.total);
       boxExp.style.display = "block";
       boxExp.innerHTML = ST.actual.explicacion;
-      btnSiguiente.disabled = false;
     }else{
       const val = (inputLibre.value??"").trim();
       if(!val) return;
@@ -162,10 +174,10 @@
         boxExp.innerHTML = Utils.escape(ST.actual.explicacion||"");
       }
       inputLibre.disabled = true;
-      btnSiguiente.disabled = false;
     }
   }
 
+  // guardar respuesta (examen)
   function guardarRespuesta(){
     const it = ST.actual;
     if(!it) return;
@@ -193,12 +205,13 @@
     setScore(ST.score, ST.total);
   }
 
+  // finalizar
   function finalizarExamen(porTiempo){
     stopTimer();
     ST.finished = true;
     setStatus(porTiempo ? "Tiempo agotado. Mostrando resultados..." : "Examen finalizado. Abajo está la revisión.");
     const reviewHtml = ST.review.map(r=>{
-      const badge = r.ok ? `<span style="color:var(--ok)">bien</span>` : `<span style="color:var(--bad)">nop</span>`;
+      const badge = r.ok ? `<span style="color:var(--ok)">✔</span>` : `<span style="color:var(--bad)">✘</span>`;
       const exp = Array.isArray(r.explicacion)
         ? r.explicacion.map(x=>`<div>${Utils.escape(x)}</div>`).join("")
         : Utils.escape(r.explicacion||"");
@@ -223,12 +236,11 @@
     btnFinalizar.style.display = "none";
   }
 
+  // empezar
   function empezar(){
-    // reseteo la sesión del generador para limpiar
     if(window.Generador && typeof Generador.resetSesion === "function"){
       Generador.resetSesion();
     }
-
     ST.modo = selModo.value;
     ST.tema = selTema.value;
     ST.idx = 0;
@@ -240,11 +252,11 @@
     setScore(0, ST.total);
     document.querySelector("#revision").innerHTML = "";
 
-    if(ST.modo==="examen") startTimer(); else { stopTimer(); lblTimer.textContent = "⏱ 01:00:00"; }
+    if(ST.modo==="examen") startTimer(); else { stopTimer(); lblTimer.textContent = "Timer 01:00:00"; }
 
     btnFinalizar.style.display = (ST.modo==="examen") ? "inline-block" : "none";
-    btnSiguiente.disabled = (ST.modo==="examen") ? false : true;
-    btnComprobar.disabled = (ST.modo==="estudio");
+    btnSiguiente.disabled = false;              // <- siempre habilitado
+    btnComprobar.disabled = (ST.modo!=="estudio");
     avanzar();
   }
 
